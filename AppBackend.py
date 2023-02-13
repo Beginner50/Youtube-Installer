@@ -1,4 +1,5 @@
 import json
+import requests
 import os
 import time
 from pytube import YouTube, exceptions
@@ -9,11 +10,13 @@ import shutil
 THUMBNAILS = os.listdir(pathlib.Path("Downloads\\.thumbnails"))
 
 
-def search_directory(*args, files_and_folders=[]):
+def search_directory(*args, files_and_folders=[], reset=False):
     """Algortithm description:
     Gets the current path and parnet from args else gets the root directory with parent 'Downloads'
     Separates folders from files and append each folder found to a folder_to_be_searched list
     """
+    if reset:
+        files_and_folders.clear()
 
     folders_in_current_dir = []
     if not args:
@@ -38,8 +41,11 @@ def search_directory(*args, files_and_folders=[]):
                 thumbnail = "{}.jpg".format(item.split(".")[0])
                 if thumbnail in THUMBNAILS:
                     thumbnail = pathlib.Path("Downloads\\.thumbnails") / thumbnail
-                else:
+                elif thumbnail != pathlib.Path("Icons") / "black.jpg":
                     thumbnail = pathlib.Path("Icons") / "black.jpg"
+                    if not item.endswith('.mp3') and not item.endswith('.webm'):
+                        convert_stream(title=item.split('.')[0], get_thumbnail=True)
+                        thumbnail = pathlib.Path('Downloads\\.thumbnails') / '{}.jpg'.format(item.split('.')[0])
                 files_and_folders.append(
                     {
                         "item_name": item,
@@ -122,27 +128,35 @@ def download_stream(itag, streams, sentinel) -> None:
         global_settings = json.load(f)
 
     stream = streams.get_by_itag(itag)
-    stream.download(output_path=global_settings["download_path"])
     title = stream.title
+    for forbidden_character in ('|', '\\', ':'):
+        title = title.replace(forbidden_character, '')
+    stream.download(output_path=global_settings["download_path"], filename=title)
 
     convert_stream(title)
 
     sentinel.value = 1
 
 
-def convert_stream(title) -> None:
-    for file in os.listdir("Downloads"):
+def convert_stream(title: str, get_thumbnail=False) -> None:
+    with open('Data\\Global_Settings.json') as f:
+        download_path = pathlib.Path(json.load(f)['download_path'])
+    for file in os.listdir(download_path):
         if title in file:
-            original_filename = pathlib.Path("Downloads") / file
-            new_filename = pathlib.Path(f"Downloads") / f"{title}.mp3"
-            thumbnail_path = pathlib.Path(f"Downloads\\.thumbnails") / f"{title}.jpg"
+            current_dir = pathlib.Path(os.getcwd())
+            original_filename = download_path / file
+            new_filename = download_path / f"{title}.mp3"
 
-            os.system(
-                f'ffmpeg -i "{str(original_filename)}" -ss 00:00:00.000 -vframes 1 "{str(thumbnail_path)}"'
-            )
+            if get_thumbnail:
+                thumbnail_path = pathlib.Path(f"Downloads\\.thumbnails") / f"{title}.jpg"
+
+                if not file.endswith('.mp3'):
+                    os.system(
+                        f'ffmpeg -i "{str(current_dir / original_filename)}" -ss 00:00:01.000 -vframes 1 "{str(current_dir / thumbnail_path)}"'
+                    )
 
             if file.endswith(".webm"):
-                os.system(f'ffmpeg -i "{str(original_filename)}" "{str(new_filename)}"')
+                os.system(f'ffmpeg -i "{str(current_dir / original_filename)}" "{str(current_dir / new_filename)}"')
 
                 while not os.path.exists(new_filename):
                     time.sleep(1)
@@ -152,7 +166,15 @@ def convert_stream(title) -> None:
 def get_streams(container, url, sentinel) -> None:
     """Function meant to run on another processor"""
     try:
-        streams = YouTube(url).streams
+        yt = YouTube(url)
+        streams = yt.streams
+        title = yt.title
+        for forbidden_character in ('|', '\\', ':'):
+            title = title.replace(forbidden_character, '')
+
+        thumbnail_url = yt.thumbnail_url
+        with open(pathlib.Path(f'Downloads\\.thumbnails\\{title}.jpg'), 'wb') as f:
+            f.write(requests.get(thumbnail_url).content)
         sentinel.value = 1
 
         container.put(streams)

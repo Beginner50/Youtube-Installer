@@ -253,7 +253,7 @@ class ExplorerToolbar:
         else:
             AppBackend.create_directory(self.working_directory / file_name)
             self.file_button_manager.refresh_file_buttons(
-                files_and_folders=AppBackend.search_directory(files_and_folders=[])
+                files_and_folders=AppBackend.search_directory(reset=True)
             )
 
     def _click_delete_button(self):
