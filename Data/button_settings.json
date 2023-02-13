@@ -1,0 +1,27 @@
+{
+  "youtube_installer_button": {
+    "normal": {
+      "image": "self.icon_dict['youtube_button_icon_normal']",
+      "fg_color": "gray",
+      "state": "normal"
+    },
+    "selected": {
+      "image": "self.icon_dict['youtube_button_icon_selected']",
+      "fg_color": "white",
+      "state": "disabled"
+    }
+  },
+  "file_explorer_button": {
+      "normal": {
+        "image": "self.icon_dict['explorer_button_icon_normal']",
+        "fg_color": "gray",
+        "state": "normal"
+      },
+      "selected": {
+        "image": "self.icon_dict['explorer_button_icon_selected']",
+        "fg_color": "white",
+        "state": "disabled"
+      }
+  }
+}
+
