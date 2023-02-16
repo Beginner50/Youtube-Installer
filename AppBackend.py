@@ -129,7 +129,7 @@ def download_stream(itag, streams, sentinel) -> None:
 
     stream = streams.get_by_itag(itag)
     title = stream.title
-    for forbidden_character in ('|', '\\', ':'):
+    for forbidden_character in ('|', '\\', ':', '/'):
         title = title.replace(forbidden_character, '')
     stream.download(output_path=global_settings["download_path"], filename=title)
 
@@ -169,11 +169,11 @@ def get_streams(container, url, sentinel) -> None:
         yt = YouTube(url)
         streams = yt.streams
         title = yt.title
-        for forbidden_character in ('|', '\\', ':'):
+        for forbidden_character in ('|', '\\', ':', '/'):
             title = title.replace(forbidden_character, '')
 
         thumbnail_url = yt.thumbnail_url
-        with open(pathlib.Path(f'Downloads\\.thumbnails\\{title}.jpg'), 'wb') as f:
+        with open(f'Downloads\\.thumbnails\\{title}.jpg', 'wb') as f:
             f.write(requests.get(thumbnail_url).content)
         sentinel.value = 1
 
