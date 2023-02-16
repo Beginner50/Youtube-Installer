@@ -7,7 +7,11 @@ import pathlib
 import threading
 import shutil
 
-THUMBNAILS = os.listdir(pathlib.Path("Downloads\\.thumbnails"))
+try:
+    THUMBNAILS = os.listdir(pathlib.Path("Downloads\\.thumbnails"))
+except FileNotFoundError:
+    os.makedirs(pathlib.Path('Downloads\\.thumbnails'))
+    THUMBNAILS = os.listdir(pathlib.Path("Downloads\\.thumbnails"))
 
 
 def search_directory(*args, files_and_folders=[], reset=False):
