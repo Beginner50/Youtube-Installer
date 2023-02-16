@@ -262,6 +262,8 @@ class CustomDialog(CTkInputDialog):
         )
         super().__init__(**kwargs)
 
+    def _create_widgets(self):
+        super()._create_widgets()
         try:
             self._cancel_button.configure(command=self._cancel_event)
         except AttributeError:

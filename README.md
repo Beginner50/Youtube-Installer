@@ -1,5 +1,6 @@
 # Youtube-Installer
-A Youtube Installer App with a File Explorer
+A Youtube Installer App with a File Explorer.
+
 Features an easy to use video downloader with several video and audio resolutions supported
 along with a file explorer tab with a rich set of tools
 - Move Files
