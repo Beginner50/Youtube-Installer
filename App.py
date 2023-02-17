@@ -1,4 +1,13 @@
 import pathlib
+import subprocess
+
+try:
+    subprocess.run(['YtVenv\\Scripts\\activate.bat'], shell=True, check=True)
+except subprocess.CalledProcessError:
+    subprocess.run(['python', '-m', 'venv', 'YtVenv'], shell=True)
+    subprocess.run(['YtVenv\\Scripts\\activate.bat'], shell=True)
+    subprocess.run(['pip', 'install', '-r', 'requirements.txt'], shell=True)
+
 from customtkinter import *
 import AppBackend
 from InstallerSearchFrame import SearchFrame

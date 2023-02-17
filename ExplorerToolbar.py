@@ -215,8 +215,6 @@ class ExplorerToolbar:
         self.hide_toolbar()
 
     def _click_rename_button(self) -> None:
-        self.file_button_manager.mode = "rename"
-
         # Prompts user to enter new file name
         original_file_name = self.file_button_selected.text
         new_file_name = self.get_file_name(
@@ -234,6 +232,8 @@ class ExplorerToolbar:
                 self.working_directory / new_file_name,
                 self.file_button_selected.thumbnail,
             )
+
+            self.file_button_manager.mode = "rename"
 
             self.file_button_manager.refresh_file_buttons(
                 file_button=self.file_button_selected,
