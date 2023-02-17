@@ -16,30 +16,22 @@ along with a file explorer tab with a rich set of tools
 
 # Installation
 ### Python needs to be installed in order for the program to work
-#### Note: Using GIT and setting up a virtual environment is optional
-#### Skip to section 2 for a quicker installation (Not recommended if you have other python projects as some libraries are incompatible with each other)
+#### Skip to section 2 if you don't have git installed
 
 ### Section 1)
 #### 1) Open up the terminal and type in the following commands
         git init
         git clone https://github.com/Beginner50/Youtube-Installer.git
         cd \Youtube-Installer
-
-#### 2) Set up the virtual environment
-        python -m venv YtInstallerVenv
-        YtInstallerVenv\Scripts\activate.bat
      
-#### 3) Install the required dependencies and run the program
-        pip install -r requirements.txt
+#### 2) Run the program
+Note that it will take some time to download dependencies when first running the program
+
         python App.py
      
 ### Section 2)
 #### 1) Download the zip file and extract it to a desired location
-#### 2) Use the terminal to navigate to that directory/folder
-        cd \Youtube-Installer_
-#### 3) Install the dependencies
-        pip install -r requirements.txt
-#### 4) Double click on App.py
+#### 2) Double click on App.py
 
 
 ## Known Bugs
