@@ -27,7 +27,7 @@ along with a file explorer tab with a rich set of tools
 #### 2) Run the program
 Note that it will take some time to download dependencies when first running the program
 
-        python App.py
+        python App.pyw
      
 ### Section 2)
 #### 1) Download the zip file and extract it to a desired location
