@@ -4,11 +4,11 @@ import sys
 
 if 'YtVenv' not in str(sys.executable):
     try:
-        subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\python.exe')), 'App.pyw'])
+        subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\pythonw.exe')), 'App.pyw'])
     except FileNotFoundError:
         subprocess.run(['python', '-m', 'venv', 'YtVenv'])
         subprocess.run([str(pathlib.Path('YtVenv\\Scripts\\python.exe')), '-m', 'pip', 'install', '-r', 'requirements.txt'])
-        subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\python.exe')), 'App.pyw'])
+        subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\pythonw.exe')), 'App.pyw'])
     sys.exit()
 
 from customtkinter import *
