@@ -1,4 +1,5 @@
 import json
+import subprocess
 import requests
 import os
 import time
@@ -155,12 +156,12 @@ def convert_stream(title: str, get_thumbnail=False) -> None:
                 thumbnail_path = pathlib.Path(f"Downloads\\.thumbnails") / f"{title}.jpg"
 
                 if not file.endswith('.mp3'):
-                    os.system(
-                        f'ffmpeg -i "{str(current_dir / original_filename)}" -ss 00:00:01.000 -vframes 1 "{str(current_dir / thumbnail_path)}"'
+                    subprocess.Popen(
+                        ['ffmpeg', '-i', f"{str(current_dir / original_filename)}", '-ss', '00:00:01.000', '-vframes', '1' f"{str(current_dir / thumbnail_path)}"]
                     )
 
             if file.endswith(".webm"):
-                os.system(f'ffmpeg -i "{str(current_dir / original_filename)}" "{str(current_dir / new_filename)}"')
+                subprocess.Popen(['ffmpeg', '-i', f"{str(current_dir / original_filename)}", f"{str(current_dir / new_filename)}"])
 
                 while not os.path.exists(new_filename):
                     time.sleep(1)

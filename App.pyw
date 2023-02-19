@@ -2,14 +2,14 @@ import pathlib
 import subprocess
 import sys
 
-if 'YtVenv' not in str(sys.executable):
-    try:
-        subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\pythonw.exe')), 'App.pyw'])
-    except FileNotFoundError:
-        subprocess.run(['python', '-m', 'venv', 'YtVenv'])
-        subprocess.run([str(pathlib.Path('YtVenv\\Scripts\\python.exe')), '-m', 'pip', 'install', '-r', 'requirements.txt'])
-        subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\pythonw.exe')), 'App.pyw'])
-    sys.exit()
+# if 'YtVenv' not in str(sys.executable):
+#     try:
+#         subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\pythonw.exe')), 'App.pyw'])
+#     except FileNotFoundError:
+#         subprocess.run(['python', '-m', 'venv', 'YtVenv'])
+#         subprocess.run([str(pathlib.Path('YtVenv\\Scripts\\python.exe')), '-m', 'pip', 'install', '-r', 'requirements.txt'])
+#         subprocess.Popen([str(pathlib.Path('YtVenv\\Scripts\\pythonw.exe')), 'App.pyw'])
+#     sys.exit()
 
 from customtkinter import *
 import AppBackend
@@ -130,7 +130,7 @@ class GUI:
 
         self.explorer_navigation_frame.initialise_files_and_folders()
         self.explorer_navigation_frame.display_files_and_folders()
-        self.explorer_frame.grid_remove()
+        self.explorer_frame.lower()
 
     def youtube_installer_frame_set_up(self) -> None:
         """Placing the installer tab on the window and setting up the search tab"""
@@ -152,18 +152,19 @@ class GUI:
 
     def switch_tabview(self):
         if self.state == 1:
-            self.installer_frame.grid_remove()
             self.explorer_navigation_frame.file_button_manager.refresh_file_buttons(
                 files_and_folders=AppBackend.search_directory(reset=True)
             )
-            self.explorer_frame.grid()
+            self.root.update_idletasks()
+            self.explorer_frame.lift()
 
             self.state = 2
         else:
-            self.installer_frame.grid()
-            self.explorer_frame.grid_remove()
+            self.installer_frame.lift()
 
             self.state = 1
+
+        self.sidebar.sidebar_frame.lift()
 
 
 if __name__ == "__main__":
